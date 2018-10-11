@@ -1,0 +1,25 @@
+{
+  "name": "aikido-atemi-service",
+  "version": "1.0.0",
+  "description": "An Aikido Atemi Service",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "api": "",
+    "test": "mocha",
+    "test-jenkins": "mocha --reporter xunit --reporter-options output=/build/test-results.xml"
+  },
+  "author": "Eduardo Cerqueira",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "newrelic": "^4.8.1",
+    "npm": "^6.4.1"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^3.5.3",
+    "nodemon": "^1.12.1"
+  }
+}
