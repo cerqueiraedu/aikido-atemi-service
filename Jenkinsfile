@@ -16,14 +16,14 @@ podTemplate(label: builderPodLabel, yaml: getBuilderTemplate()) {
             }
             stage('Running Tests') {
                 def testResultsPath = "${env.WORKSPACE}/build"
-                runNodeTests(appName, imageVersion, testResultsPath)
+                runNodeTests(appName, testResultsPath)
             }
             stage('Collect Test Results') {
                 junit "**/build/*.xml"
             }
             stage('Docker Push') {
                 docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                    image.push()
+                    image.push(imageVersion)
                     image.push("latest")
                 }  
             }
