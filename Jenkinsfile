@@ -12,7 +12,7 @@ podTemplate(label: builderPodLabel, yaml: getBuilderTemplate()) {
                 checkout scm
             }
             stage('Docker Build') {
-                image = docker.build("ecerqueira/${appName}:${imageVersion}", ".")
+                image = docker.build("ecerqueira/${appName}", ".")
             }
             stage('Running Tests') {
                 def testResultsPath = "${env.WORKSPACE}/build"
