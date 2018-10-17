@@ -19,7 +19,7 @@ podTemplate(label: builderPodLabel, yaml: getBuilderTemplate()) {
             }
             stage('Collect Test Results') {
                 junit "**/build/*.xml"
-            }
+            }  
         }
     }
 }
