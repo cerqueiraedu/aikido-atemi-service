@@ -19,7 +19,12 @@ podTemplate(label: builderPodLabel, yaml: getBuilderTemplate()) {
             }
             stage('Collect Test Results') {
                 junit "**/build/*.xml"
-            }  
+            }
+            stage('Triggering Promotion Process') {
+                build job: 'Aikido Atemi Service MultiConfig', 
+                parameters: [[$class: 'StringParameterValue', name: 'build', value: 'success'], 
+                            [$class: 'StringParameterValue', name: 'branchName', value: "${BRANCH_NAME}"]]  
+            }
         }
     }
 }

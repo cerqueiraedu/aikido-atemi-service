@@ -16,7 +16,7 @@ podTemplate(label: builderPodLabel, yaml: getBuilderTemplate()) {
                 }  
             }
             stage('Helm Deploying') {
-                runHelmDeployment("aikido-app-charts", "default", "release-candidate", appName)
+                runHelmDeployment("aikido-app-charts", "default", "alpha-production", appName)
             } 
         }
     }
