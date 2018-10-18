@@ -7,7 +7,8 @@ podTemplate(label: builderPodLabel, yaml: getBuilderTemplate()) {
     node (builderPodLabel) {
         container('docker-helm') {
             stage('Helm Deploying') {
-                runHelmDeployment("aikido-app-charts", "default", "release", appName)
+                echo "${params.Target}"
+                runHelmDeployment("aikido-app-charts", "default", "alpha-production", appName, "${params.imageVersion}")
             }
         }
     }
