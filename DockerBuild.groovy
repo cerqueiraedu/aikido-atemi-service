@@ -9,7 +9,6 @@ podTemplate(label: builderPodLabel, yaml: getBuilderTemplate()) {
     node (builderPodLabel) {
         stage('Fetching Code') { 
             checkout scm
-            sh "git fetch --tags"
             imageTag = sh (
                 script: 'git tag',
                 returnStdout: true
