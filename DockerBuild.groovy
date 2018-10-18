@@ -8,9 +8,9 @@ def imageTag
 podTemplate(label: builderPodLabel, yaml: getBuilderTemplate()) {
     node (builderPodLabel) {
         stage('Fetching Code') { 
-            checkout scm
+            def commitHash = checkout(scm).GIT_COMMIT
             imageTag = sh (
-                script: 'git tag',
+                script: "git tag --contains ${commitHash}",
                 returnStdout: true
             ).trim()
         }
