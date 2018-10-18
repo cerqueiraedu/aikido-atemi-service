@@ -3,13 +3,19 @@
 def builderPodLabel = getBuilderLabel()
 def appName = "aikido-atemi-service"
 def image
+def imageTag
 
 podTemplate(label: builderPodLabel, yaml: getBuilderTemplate()) {
     node (builderPodLabel) {
+        stage('Fetching Code') { 
+            checkout scm
+            sh "git fetch --tags"
+            imageTag = sh (
+                script: 'git tag',
+                returnStdout: true
+            ).trim()
+        }
         container('docker-helm') {
-            stage('Fetching Code') { 
-                checkout scm
-            }
             stage('Docker Build') {
                 image = docker.build("ecerqueira/${appName}", ".")
             }
@@ -20,10 +26,11 @@ podTemplate(label: builderPodLabel, yaml: getBuilderTemplate()) {
             stage('Collect Test Results') {
                 junit "**/build/*.xml"
             }
-            stage('Triggering Promotion Process') {
-                build job: 'Aikido Atemi Service MultiConfig', 
-                parameters: [[$class: 'StringParameterValue', name: 'build', value: 'success'], 
-                            [$class: 'StringParameterValue', name: 'branchName', value: "${BRANCH_NAME}"]]  
+            stage('Docker Push') {
+                docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                    image.push("${imageTag}")
+                    image.push("latest")
+                }  
             }
         }
     }
