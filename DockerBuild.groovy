@@ -8,11 +8,7 @@ def imageTag
 podTemplate(label: builderPodLabel, yaml: getBuilderTemplate()) {
     node (builderPodLabel) {
         stage('Fetching Code') { 
-            def commitHash = checkout(scm).GIT_COMMIT
-            imageTag = sh (
-                script: "git tag --contains ${commitHash}",
-                returnStdout: true
-            ).trim()
+            imageTag = fetchCommitTag(checkout(scm).GIT_COMMIT)
         }
         container('docker-helm') {
             stage('Docker Build') {
